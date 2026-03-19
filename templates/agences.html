@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}Nos agences — NOVATECH{% endblock %}
+
+{% block content %}
+<section class="agences-section">
+    <div class="section-header">
+        <span class="section-label">Réseau</span>
+        <h2 class="section-title">Nos 13 agences en France</h2>
+        <p class="section-desc">Un maillage national pour intervenir au plus près de vos besoins.</p>
+    </div>
+
+    <div class="agence-grid">
+        {% for a in agences %}
+        <div class="agence-card {{ 'agence-card--siege' if a.is_siege }}">
+            {% if a.is_siege %}
+                <span class="agence-card__badge">Siège social</span>
+            {% endif %}
+            <h3 class="agence-card__name">{{ a.name }}</h3>
+            <p class="agence-card__address">{{ a.address }}</p>
+            <p class="agence-card__phone">{{ a.phone }}</p>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+
+<section class="cta-banner">
+    <div class="cta-banner__glow"></div>
+    <div class="cta-banner__content">
+        <h2>Besoin d'un technicien près de chez vous ?</h2>
+        <p>Nos équipes interviennent sous 24h dans toute la France.</p>
+        <a href="{{ url_for('contact') }}" class="btn btn--primary">Demander une intervention</a>
+    </div>
+</section>
+{% endblock %}

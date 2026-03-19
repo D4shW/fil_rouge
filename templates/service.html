@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block title %}{{ service.name }} — NOVATECH{% endblock %}
+
+{% block content %}
+<section class="service-detail">
+    <div class="service-detail__header">
+        <span class="service-card__category">{{ service.category }}</span>
+        <div class="service-detail__icon">{{ service.icon }}</div>
+        <h1 class="service-detail__name">{{ service.name }}</h1>
+        <div class="service-detail__price-box">
+            <span class="service-detail__price">{{ "%.0f"|format(service.price) }} €</span>
+            <span class="service-detail__unit">/ {{ service.unit }}</span>
+        </div>
+        <p class="service-detail__desc">{{ service.description }}</p>
+        <div class="service-detail__actions">
+            <form action="{{ url_for('add_to_cart', service_id=service.id) }}" method="post" class="add-to-cart-form">
+                <button type="submit" class="btn btn--primary">Ajouter au devis</button>
+            </form>
+            <a href="{{ url_for('contact') }}" class="btn btn--ghost">Nous contacter</a>
+        </div>
+    </div>
+    <div class="text-center" style="margin-top: var(--space-xl);">
+        <a href="{{ url_for('services') }}" class="btn btn--ghost btn--sm">← Retour aux services</a>
+    </div>
+</section>
+{% endblock %}

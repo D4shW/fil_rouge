@@ -1,0 +1,116 @@
+{% extends "base.html" %}
+
+{% block title %}NOVATECH — Assistance informatique professionnelle{% endblock %}
+
+{% block content %}
+<!-- ═══ HERO ═══ -->
+<section class="hero">
+    <div class="hero__grid"></div>
+    <div class="hero__glow"></div>
+    <div class="hero__content">
+        <div class="hero__text">
+            <div class="hero__badge"><span class="dot"></span> 13 agences en France</div>
+            <h1 class="hero__title">
+                Votre informatique,<br>
+                <span class="accent">notre expertise.</span>
+            </h1>
+            <p class="hero__desc">
+                NovaTech accompagne les professionnels et les particuliers avec des solutions informatiques sur mesure. Dépannage, réseau, sécurité, cloud — nous intervenons partout en France.
+            </p>
+            <div class="hero__actions">
+                <a href="{{ url_for('services') }}" class="btn btn--primary">Voir nos services</a>
+                <a href="{{ url_for('contact') }}" class="btn btn--outline-light">Demander un devis</a>
+            </div>
+        </div>
+        <div class="hero__stats">
+            <div class="stat-card">
+                <div class="stat-card__number">13</div>
+                <div class="stat-card__label">Agences en France</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-card__number">24h</div>
+                <div class="stat-card__label">Délai d'intervention</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-card__number">98%</div>
+                <div class="stat-card__label">Clients satisfaits</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-card__number">5k+</div>
+                <div class="stat-card__label">Interventions/an</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ═══ SERVICES POPULAIRES ═══ -->
+<section class="services-section">
+    <div class="section-header">
+        <span class="section-label">Services</span>
+        <h2 class="section-title">Nos services les plus demandés</h2>
+        <p class="section-desc">Des solutions adaptées à chaque besoin, du dépannage ponctuel au contrat de maintenance.</p>
+    </div>
+
+    <div class="service-grid">
+        {% for s in services %}
+        <article class="service-card">
+            <span class="service-card__category">{{ s.category }}</span>
+            <div class="service-card__icon">{{ s.icon }}</div>
+            <h3 class="service-card__name">{{ s.name }}</h3>
+            <p class="service-card__desc">{{ s.description }}</p>
+            <div class="service-card__footer">
+                <div>
+                    <span class="service-card__price">{{ "%.0f"|format(s.price) }} €</span>
+                    <span class="service-card__unit"> / {{ s.unit }}</span>
+                </div>
+                <a href="{{ url_for('service_detail', service_id=s.id) }}" class="btn btn--sm btn--ghost">Détails →</a>
+            </div>
+        </article>
+        {% endfor %}
+    </div>
+
+    <div class="text-center mt-xl">
+        <a href="{{ url_for('services') }}" class="btn btn--dark">Tous nos services</a>
+    </div>
+</section>
+
+<!-- ═══ WHY US ═══ -->
+<section class="why-us">
+    <div class="section-header">
+        <span class="section-label">Pourquoi NovaTech</span>
+        <h2 class="section-title">Un réseau, une expertise</h2>
+    </div>
+    <div class="why-grid">
+        <div class="why-card">
+            <div class="why-card__icon">⚡</div>
+            <h3 class="why-card__title">Réactivité</h3>
+            <p class="why-card__desc">Intervention sous 24h, assistance à distance en 30 minutes.</p>
+        </div>
+        <div class="why-card">
+            <div class="why-card__icon">🛡️</div>
+            <h3 class="why-card__title">Sécurité</h3>
+            <p class="why-card__desc">Audit, pare-feu, VPN, antivirus — votre SI est entre de bonnes mains.</p>
+        </div>
+        <div class="why-card">
+            <div class="why-card__icon">🤝</div>
+            <h3 class="why-card__title">Proximité</h3>
+            <p class="why-card__desc">13 agences partout en France, un interlocuteur dédié près de chez vous.</p>
+        </div>
+        <div class="why-card">
+            <div class="why-card__icon">💰</div>
+            <h3 class="why-card__title">Transparence</h3>
+            <p class="why-card__desc">Devis gratuit, tarifs clairs, aucun frais caché. Paiement après intervention.</p>
+        </div>
+    </div>
+</section>
+
+<!-- ═══ CTA ═══ -->
+<section class="cta-banner">
+    <div class="cta-banner__glow"></div>
+    <div class="cta-banner__content">
+        <h2>Un problème informatique ?<br>On s'en occupe.</h2>
+        <p>Décrivez votre besoin et recevez un devis personnalisé sous 24h.</p>
+        <a href="{{ url_for('contact') }}" class="btn btn--primary">Nous contacter</a>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block title %}Mon devis — NOVATECH{% endblock %}
+
+{% block content %}
+<section class="cart-section">
+    <div class="section-header">
+        <span class="section-label">Récapitulatif</span>
+        <h2 class="section-title">Mon devis</h2>
+    </div>
+
+    {% if items %}
+        {% for item in items %}
+        <div class="cart-item">
+            <span class="cart-item__icon">{{ item.icon }}</span>
+            <div>
+                <h3 class="cart-item__name">{{ item.name }}</h3>
+                <span class="cart-item__qty">Qté : {{ item.qty }} × {{ "%.0f"|format(item.price) }} € / {{ item.unit }}</span>
+            </div>
+            <span class="cart-item__price">{{ "%.2f"|format(item.subtotal) }} €</span>
+            <form action="{{ url_for('remove_from_cart', service_id=item.id) }}" method="post">
+                <button type="submit" class="btn btn--sm btn--ghost">Retirer</button>
+            </form>
+        </div>
+        {% endfor %}
+
+        <div class="cart-total">
+            <span class="cart-total__label">Total estimé</span>
+            <span class="cart-total__value">{{ "%.2f"|format(total) }} €</span>
+        </div>
+
+        <form action="{{ url_for('request_intervention') }}" method="post">
+            <div class="cart-notes">
+                <label class="form-label" for="notes">Notes complémentaires (optionnel)</label>
+                <textarea id="notes" name="notes" placeholder="Décrivez votre besoin, contraintes horaires, adresse d'intervention..."></textarea>
+            </div>
+            <div class="cart-actions">
+                <a href="{{ url_for('services') }}" class="btn btn--ghost">Ajouter des services</a>
+                <button type="submit" class="btn btn--primary">Demander l'intervention</button>
+            </div>
+        </form>
+    {% else %}
+        <div class="cart-empty">
+            <p class="cart-empty__icon">📋</p>
+            <p>Votre devis est vide.</p>
+            <p style="color: var(--gray-400); font-size: 0.9rem; margin-top: 0.5rem;">Ajoutez des services pour constituer votre demande d'intervention.</p>
+            <a href="{{ url_for('services') }}" class="btn btn--dark mt-xl">Voir nos services</a>
+        </div>
+    {% endif %}
+</section>
+{% endblock %}
