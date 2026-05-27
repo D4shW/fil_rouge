@@ -17,7 +17,8 @@ from flask import (
 )
 
 # ─── App Configuration ───────────────────────────────────
-app = Flask(__name__)
+_instance_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'instance')
+app = Flask(__name__, instance_path=_instance_path)
 app.secret_key = secrets.token_hex(32)
 app.config['DATABASE'] = os.path.join(app.instance_path, 'store.json')
 
@@ -43,7 +44,9 @@ def _load_db():
 
 
 def _save_db(db):
-    with open(app.config['DATABASE'], 'w', encoding='utf-8') as f:
+    db_path = app.config['DATABASE']
+    os.makedirs(os.path.dirname(db_path), exist_ok=True)
+    with open(db_path, 'w', encoding='utf-8') as f:
         json.dump(db, f, indent=2, default=str, ensure_ascii=False)
 
 
