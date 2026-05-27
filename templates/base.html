@@ -12,47 +12,54 @@
     {% block head %}{% endblock %}
 </head>
 <body>
+    <a href="#main-content" class="skip-link">Passer au contenu principal</a>
+
     <!-- ═══ NAVBAR ═══ -->
-    <nav class="nav" id="mainNav">
+    <nav class="nav" id="mainNav" role="navigation" aria-label="Navigation principale">
         <div class="nav__inner">
-            <a href="{{ url_for('index') }}" class="nav__logo">
-                <span class="nav__logo-icon">⬡</span>
+            <a href="{{ url_for('main.index') }}" class="nav__logo" aria-label="NOVATECH — Accueil">
+                <span class="nav__logo-icon" aria-hidden="true">⬡</span>
                 <span class="nav__logo-text">NOVA<span class="accent">TECH</span></span>
             </a>
             <div class="nav__links">
-                <a href="{{ url_for('services') }}" class="nav__link">Services</a>
-                <a href="{{ url_for('agences') }}" class="nav__link">Nos agences</a>
-                <a href="{{ url_for('contact') }}" class="nav__link">Contact</a>
+                <a href="{{ url_for('main.services') }}" class="nav__link">Services</a>
+                <a href="{{ url_for('main.agences') }}" class="nav__link">Nos agences</a>
+                <a href="{{ url_for('main.contact') }}" class="nav__link">Contact</a>
                 {% if session.get('user_id') %}
-                    <a href="{{ url_for('my_interventions') }}" class="nav__link">Mes demandes</a>
-                    <span class="nav__link nav__link--muted">{{ session.user_name }}</span>
-                    <a href="{{ url_for('logout') }}" class="nav__link nav__link--sm">Déconnexion</a>
+                    <a href="{{ url_for('cart.my_interventions') }}" class="nav__link">Mes demandes</a>
+                    <span class="nav__link nav__link--muted" aria-label="Connecté en tant que {{ session.user_name }}">{{ session.user_name }}</span>
+                    <a href="{{ url_for('auth.logout') }}" class="nav__link nav__link--sm">Déconnexion</a>
                 {% else %}
-                    <a href="{{ url_for('login') }}" class="nav__link">Connexion</a>
+                    <a href="{{ url_for('auth.login') }}" class="nav__link">Connexion</a>
                 {% endif %}
-                <a href="{{ url_for('cart') }}" class="nav__cart">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <a href="{{ url_for('cart.cart') }}" class="nav__cart" aria-label="Mon devis{% if cart_count > 0 %} ({{ cart_count }} service{{ 's' if cart_count > 1 }}){% endif %}">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true" focusable="false">
                         <rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a4 4 0 00-8 0v2"/>
                     </svg>
                     {% if cart_count > 0 %}
-                        <span class="nav__cart-badge">{{ cart_count }}</span>
+                        <span class="nav__cart-badge" aria-hidden="true">{{ cart_count }}</span>
                     {% endif %}
                 </a>
             </div>
-            <button class="nav__burger" id="navBurger" aria-label="Menu">
-                <span></span><span></span><span></span>
+            <button class="nav__burger" id="navBurger"
+                    aria-label="Ouvrir le menu de navigation"
+                    aria-expanded="false"
+                    aria-controls="navMobile">
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
             </button>
         </div>
-        <div class="nav__mobile" id="navMobile">
-            <a href="{{ url_for('services') }}">Services</a>
-            <a href="{{ url_for('agences') }}">Nos agences</a>
-            <a href="{{ url_for('contact') }}">Contact</a>
-            <a href="{{ url_for('cart') }}">Devis ({{ cart_count }})</a>
+        <div class="nav__mobile" id="navMobile" role="menu">
+            <a href="{{ url_for('main.services') }}" role="menuitem">Services</a>
+            <a href="{{ url_for('main.agences') }}" role="menuitem">Nos agences</a>
+            <a href="{{ url_for('main.contact') }}" role="menuitem">Contact</a>
+            <a href="{{ url_for('cart.cart') }}" role="menuitem">Devis ({{ cart_count }})</a>
             {% if session.get('user_id') %}
-                <a href="{{ url_for('my_interventions') }}">Mes demandes</a>
-                <a href="{{ url_for('logout') }}">Déconnexion</a>
+                <a href="{{ url_for('cart.my_interventions') }}" role="menuitem">Mes demandes</a>
+                <a href="{{ url_for('auth.logout') }}" role="menuitem">Déconnexion</a>
             {% else %}
-                <a href="{{ url_for('login') }}">Connexion</a>
+                <a href="{{ url_for('auth.login') }}" role="menuitem">Connexion</a>
             {% endif %}
         </div>
     </nav>
@@ -60,11 +67,11 @@
     <!-- ═══ FLASH MESSAGES ═══ -->
     {% with messages = get_flashed_messages(with_categories=true) %}
     {% if messages %}
-        <div class="flash-container">
+        <div class="flash-container" role="status" aria-live="polite" aria-atomic="false">
         {% for cat, msg in messages %}
-            <div class="flash flash--{{ cat }}">
+            <div class="flash flash--{{ cat }}" role="alert">
                 <span>{{ msg }}</span>
-                <button class="flash__close" onclick="this.parentElement.remove()">✕</button>
+                <button class="flash__close" onclick="this.parentElement.remove()" aria-label="Fermer la notification">✕</button>
             </div>
         {% endfor %}
         </div>
@@ -72,31 +79,31 @@
     {% endwith %}
 
     <!-- ═══ MAIN ═══ -->
-    <main class="main">
+    <main class="main" id="main-content" tabindex="-1">
         {% block content %}{% endblock %}
     </main>
 
     <!-- ═══ FOOTER ═══ -->
-    <footer class="footer">
+    <footer class="footer" role="contentinfo">
         <div class="footer__inner">
             <div class="footer__brand">
-                <span class="footer__logo">⬡ NOVA<span class="accent">TECH</span></span>
+                <span class="footer__logo" aria-hidden="true">⬡ NOVA<span class="accent">TECH</span></span>
                 <p class="footer__tagline">Votre partenaire informatique de confiance.</p>
-                <p class="footer__phone">📞 04 42 00 00 01</p>
+                <p class="footer__phone">📞 <a href="tel:+33442000001">04 42 00 00 01</a></p>
             </div>
-            <div class="footer__cols">
+            <nav class="footer__cols" aria-label="Navigation secondaire">
                 <div>
                     <h4>Navigation</h4>
-                    <a href="{{ url_for('index') }}">Accueil</a>
-                    <a href="{{ url_for('services') }}">Services</a>
-                    <a href="{{ url_for('agences') }}">Nos agences</a>
-                    <a href="{{ url_for('contact') }}">Contact</a>
+                    <a href="{{ url_for('main.index') }}">Accueil</a>
+                    <a href="{{ url_for('main.services') }}">Services</a>
+                    <a href="{{ url_for('main.agences') }}">Nos agences</a>
+                    <a href="{{ url_for('main.contact') }}">Contact</a>
                 </div>
                 <div>
                     <h4>API</h4>
-                    <a href="{{ url_for('api_services') }}">/api/v1/services</a>
-                    <a href="{{ url_for('api_interventions') }}">/api/v1/interventions</a>
-                    <a href="{{ url_for('api_agences') }}">/api/v1/agences</a>
+                    <a href="{{ url_for('api.api_services') }}">/api/v1/services</a>
+                    <a href="{{ url_for('api.api_interventions') }}">/api/v1/interventions</a>
+                    <a href="{{ url_for('api.api_agences') }}">/api/v1/agences</a>
                 </div>
                 <div>
                     <h4>Légal</h4>
@@ -104,7 +111,7 @@
                     <a href="#">CGV</a>
                     <a href="#">Politique de confidentialité</a>
                 </div>
-            </div>
+            </nav>
         </div>
         <div class="footer__bottom">
             <p>© 2026 NovaTech — Siège social : 45 Cours Mirabeau, 13100 Aix-en-Provence — 13 agences en France</p>

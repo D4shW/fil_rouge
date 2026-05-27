@@ -6,35 +6,53 @@
 <div class="form-page">
     <div class="section-header">
         <span class="section-label">Nouveau client</span>
-        <h2 class="section-title">Créer un compte</h2>
+        <h1 class="section-title">Créer un compte</h1>
     </div>
 
-    <form method="post">
+    <form method="post" novalidate>
         <div class="form-group">
-            <label class="form-label" for="name">Nom complet</label>
-            <input type="text" id="name" name="name" class="form-input" placeholder="Jean Dupont" required>
+            <label class="form-label" for="name">Nom complet <span aria-hidden="true">*</span></label>
+            <input type="text" id="name" name="name" class="form-input"
+                   placeholder="Jean Dupont"
+                   autocomplete="name"
+                   aria-required="true"
+                   required>
         </div>
         <div class="form-group">
-            <label class="form-label" for="email">Adresse email</label>
-            <input type="email" id="email" name="email" class="form-input" placeholder="vous@entreprise.com" required>
+            <label class="form-label" for="email">Adresse email <span aria-hidden="true">*</span></label>
+            <input type="email" id="email" name="email" class="form-input"
+                   placeholder="vous@entreprise.com"
+                   autocomplete="email"
+                   aria-required="true"
+                   required>
         </div>
         <div class="form-group">
             <label class="form-label" for="phone">Téléphone</label>
-            <input type="tel" id="phone" name="phone" class="form-input" placeholder="06 12 34 56 78">
+            <input type="tel" id="phone" name="phone" class="form-input"
+                   placeholder="06 12 34 56 78"
+                   autocomplete="tel">
         </div>
         <div class="form-group">
-            <label class="form-label" for="company">Entreprise (optionnel)</label>
-            <input type="text" id="company" name="company" class="form-input" placeholder="Nom de votre entreprise">
+            <label class="form-label" for="company">Entreprise <span class="form-optional">(optionnel)</span></label>
+            <input type="text" id="company" name="company" class="form-input"
+                   placeholder="Nom de votre entreprise"
+                   autocomplete="organization">
         </div>
         <div class="form-group">
-            <label class="form-label" for="password">Mot de passe</label>
-            <input type="password" id="password" name="password" class="form-input" placeholder="8 caractères minimum" required minlength="8">
+            <label class="form-label" for="password">Mot de passe <span aria-hidden="true">*</span></label>
+            <input type="password" id="password" name="password" class="form-input"
+                   placeholder="8 caractères minimum"
+                   autocomplete="new-password"
+                   aria-required="true"
+                   aria-describedby="password-hint"
+                   required minlength="8">
+            <span id="password-hint" class="form-hint">Minimum 8 caractères.</span>
         </div>
         <button type="submit" class="btn btn--primary btn--block">Créer mon compte</button>
     </form>
 
     <p class="form-footer">
-        Déjà inscrit ? <a href="{{ url_for('login') }}">Se connecter</a>
+        Déjà inscrit ? <a href="{{ url_for('auth.login') }}">Se connecter</a>
     </p>
 </div>
 {% endblock %}

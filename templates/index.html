@@ -18,8 +18,8 @@
                 NovaTech accompagne les professionnels et les particuliers avec des solutions informatiques sur mesure. Dépannage, réseau, sécurité, cloud — nous intervenons partout en France.
             </p>
             <div class="hero__actions">
-                <a href="{{ url_for('services') }}" class="btn btn--primary">Voir nos services</a>
-                <a href="{{ url_for('contact') }}" class="btn btn--outline-light">Demander un devis</a>
+                <a href="{{ url_for('main.services') }}" class="btn btn--primary">Voir nos services</a>
+                <a href="{{ url_for('main.contact') }}" class="btn btn--outline-light">Demander un devis</a>
             </div>
         </div>
         <div class="hero__stats">
@@ -63,14 +63,14 @@
                     <span class="service-card__price">{{ "%.0f"|format(s.price) }} €</span>
                     <span class="service-card__unit"> / {{ s.unit }}</span>
                 </div>
-                <a href="{{ url_for('service_detail', service_id=s.id) }}" class="btn btn--sm btn--ghost">Détails →</a>
+                <a href="{{ url_for('main.service_detail', service_id=s.id) }}" class="btn btn--sm btn--ghost">Détails →</a>
             </div>
         </article>
         {% endfor %}
     </div>
 
     <div class="text-center mt-xl">
-        <a href="{{ url_for('services') }}" class="btn btn--dark">Tous nos services</a>
+        <a href="{{ url_for('main.services') }}" class="btn btn--dark">Tous nos services</a>
     </div>
 </section>
 
@@ -110,7 +110,7 @@
     <div class="cta-banner__content">
         <h2>Un problème informatique ?<br>On s'en occupe.</h2>
         <p>Décrivez votre besoin et recevez un devis personnalisé sous 24h.</p>
-        <a href="{{ url_for('contact') }}" class="btn btn--primary">Nous contacter</a>
+        <a href="{{ url_for('main.contact') }}" class="btn btn--primary">Nous contacter</a>
     </div>
 </section>
 {% endblock %}

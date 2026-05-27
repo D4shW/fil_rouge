@@ -10,28 +10,30 @@
     </div>
 
     {% if interventions %}
-        {% for interv in interventions|reverse %}
-        <div class="intervention-card">
+        <ul class="interventions-list" aria-label="Historique de vos demandes">
+        {% for interv in interventions %}
+        <li class="intervention-card">
             <div class="intervention-card__header">
                 <span class="intervention-card__id">Demande #{{ interv.id }}</span>
                 <span class="status-badge status-badge--pending">{{ interv.status }}</span>
             </div>
-            <div class="intervention-card__services">
-                {% for svc in interv.service_details %}
-                    <span>{{ svc.icon }} {{ svc.name }} (×{{ svc.qty }})</span>{% if not loop.last %} · {% endif %}
+            <div class="intervention-card__services" aria-label="Services demandés">
+                {% for item in interv.items %}
+                    <span><span aria-hidden="true">{{ item.service_icon }}</span> {{ item.service_name }} (×{{ item.qty }})</span>{% if not loop.last %} · {% endif %}
                 {% endfor %}
             </div>
             {% if interv.notes %}
                 <p style="font-size: 0.85rem; color: var(--gray-600); margin-top: 0.5rem; font-style: italic;">« {{ interv.notes }} »</p>
             {% endif %}
-            <p class="intervention-card__date">{{ interv.date[:10] }}</p>
-        </div>
+            <p class="intervention-card__date"><time datetime="{{ interv.date }}">{{ interv.date[:10] }}</time></p>
+        </li>
         {% endfor %}
+        </ul>
     {% else %}
         <div class="cart-empty">
-            <p class="cart-empty__icon">📂</p>
+            <p class="cart-empty__icon" aria-hidden="true">📂</p>
             <p>Aucune demande d'intervention pour le moment.</p>
-            <a href="{{ url_for('services') }}" class="btn btn--dark mt-xl">Découvrir nos services</a>
+            <a href="{{ url_for('main.services') }}" class="btn btn--dark mt-xl">Découvrir nos services</a>
         </div>
     {% endif %}
 </section>

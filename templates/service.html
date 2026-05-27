@@ -14,14 +14,14 @@
         </div>
         <p class="service-detail__desc">{{ service.description }}</p>
         <div class="service-detail__actions">
-            <form action="{{ url_for('add_to_cart', service_id=service.id) }}" method="post" class="add-to-cart-form">
+            <form action="{{ url_for('cart.add_to_cart', service_id=service.id) }}" method="post" class="add-to-cart-form">
                 <button type="submit" class="btn btn--primary">Ajouter au devis</button>
             </form>
-            <a href="{{ url_for('contact') }}" class="btn btn--ghost">Nous contacter</a>
+            <a href="{{ url_for('main.contact') }}" class="btn btn--ghost">Nous contacter</a>
         </div>
     </div>
     <div class="text-center" style="margin-top: var(--space-xl);">
-        <a href="{{ url_for('services') }}" class="btn btn--ghost btn--sm">← Retour aux services</a>
+        <a href="{{ url_for('main.services') }}" class="btn btn--ghost btn--sm">← Retour aux services</a>
     </div>
 </section>
 {% endblock %}

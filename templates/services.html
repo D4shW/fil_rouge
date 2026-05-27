@@ -11,9 +11,9 @@
     </div>
 
     <div class="filter-bar">
-        <a href="{{ url_for('services') }}" class="filter-btn {{ 'filter-btn--active' if current_cat == 'all' }}">Tous</a>
+        <a href="{{ url_for('main.services') }}" class="filter-btn {{ 'filter-btn--active' if current_cat == 'all' }}">Tous</a>
         {% for cat in categories %}
-        <a href="{{ url_for('services', category=cat) }}" class="filter-btn {{ 'filter-btn--active' if current_cat == cat }}">{{ cat|capitalize }}</a>
+        <a href="{{ url_for('main.services', category=cat) }}" class="filter-btn {{ 'filter-btn--active' if current_cat == cat }}">{{ cat|capitalize }}</a>
         {% endfor %}
     </div>
 
@@ -30,7 +30,7 @@
                     <span class="service-card__price">{{ "%.0f"|format(s.price) }} €</span>
                     <span class="service-card__unit"> / {{ s.unit }}</span>
                 </div>
-                <a href="{{ url_for('service_detail', service_id=s.id) }}" class="btn btn--sm btn--ghost">Détails →</a>
+                <a href="{{ url_for('main.service_detail', service_id=s.id) }}" class="btn btn--sm btn--ghost">Détails →</a>
             </div>
         </article>
         {% endfor %}
@@ -39,7 +39,7 @@
     <div class="cart-empty">
         <p class="cart-empty__icon">∅</p>
         <p>Aucun service dans cette catégorie.</p>
-        <a href="{{ url_for('services') }}" class="btn btn--dark mt-xl">Voir tout</a>
+        <a href="{{ url_for('main.services') }}" class="btn btn--dark mt-xl">Voir tout</a>
     </div>
     {% endif %}
 </section>

@@ -1068,3 +1068,73 @@ textarea.form-input {
 .text-center { text-align: center; }
 .mt-xl { margin-top: var(--space-xl); }
 .mb-xl { margin-bottom: var(--space-xl); }
+
+/* ═══ ACCESSIBILITÉ ════════════════════════════════ */
+
+/* Skip link — visible uniquement au focus clavier */
+.skip-link {
+    position: absolute;
+    top: -100%;
+    left: 1rem;
+    background: var(--cyan);
+    color: var(--dark);
+    font-weight: 600;
+    padding: 0.5rem 1rem;
+    border-radius: 0 0 var(--radius-sm) var(--radius-sm);
+    z-index: 9999;
+    text-decoration: none;
+    transition: top 0.2s;
+}
+.skip-link:focus {
+    top: 0;
+    outline: 3px solid var(--dark);
+    outline-offset: 2px;
+}
+
+/* Focus visible sur tous les éléments interactifs */
+:focus-visible {
+    outline: 2px solid var(--cyan);
+    outline-offset: 3px;
+    border-radius: 4px;
+}
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+    outline: 2px solid var(--cyan);
+    outline-offset: 3px;
+}
+
+/* Aide et indication optionnelle sur les formulaires */
+.form-hint {
+    display: block;
+    font-size: 0.8rem;
+    color: var(--gray-400);
+    margin-top: 0.25rem;
+}
+.form-optional {
+    font-size: 0.8rem;
+    color: var(--gray-400);
+    font-weight: 400;
+}
+
+/* Cart list reset */
+.cart-list,
+.interventions-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+/* Réduire les animations pour les utilisateurs sensibles */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}

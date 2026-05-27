@@ -10,7 +10,20 @@ document.addEventListener('DOMContentLoaded', () => {
     const burger = document.getElementById('navBurger');
     const mobile = document.getElementById('navMobile');
     if (burger && mobile) {
-        burger.addEventListener('click', () => mobile.classList.toggle('open'));
+        burger.addEventListener('click', () => {
+            const isOpen = mobile.classList.toggle('open');
+            burger.setAttribute('aria-expanded', String(isOpen));
+            burger.setAttribute('aria-label', isOpen ? 'Fermer le menu de navigation' : 'Ouvrir le menu de navigation');
+        });
+
+        document.addEventListener('keydown', e => {
+            if (e.key === 'Escape' && mobile.classList.contains('open')) {
+                mobile.classList.remove('open');
+                burger.setAttribute('aria-expanded', 'false');
+                burger.setAttribute('aria-label', 'Ouvrir le menu de navigation');
+                burger.focus();
+            }
+        });
     }
 
     // ─── Auto-dismiss flash ──────────────────────
@@ -24,22 +37,25 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // ─── Scroll reveal ───────────────────────────
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.style.opacity = '1';
-                entry.target.style.transform = 'translateY(0)';
-                observer.unobserve(entry.target);
-            }
-        });
-    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (!prefersReduced) {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
 
-    document.querySelectorAll('.service-card, .agence-card, .why-card, .form-page').forEach((el, i) => {
-        el.style.opacity = '0';
-        el.style.transform = 'translateY(25px)';
-        el.style.transition = `all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) ${i * 0.05}s`;
-        observer.observe(el);
-    });
+        document.querySelectorAll('.service-card, .agence-card, .why-card, .form-page').forEach((el, i) => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(25px)';
+            el.style.transition = `all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) ${i * 0.05}s`;
+            observer.observe(el);
+        });
+    }
 
     // ─── Add-to-cart feedback ────────────────────
     document.querySelectorAll('.add-to-cart-form').forEach(form => {

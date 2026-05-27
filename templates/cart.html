@@ -10,41 +10,46 @@
     </div>
 
     {% if items %}
+        <ul class="cart-list" aria-label="Services dans votre devis">
         {% for item in items %}
-        <div class="cart-item">
-            <span class="cart-item__icon">{{ item.icon }}</span>
+        <li class="cart-item">
+            <span class="cart-item__icon" aria-hidden="true">{{ item.service.icon }}</span>
             <div>
-                <h3 class="cart-item__name">{{ item.name }}</h3>
-                <span class="cart-item__qty">Qté : {{ item.qty }} × {{ "%.0f"|format(item.price) }} € / {{ item.unit }}</span>
+                <h3 class="cart-item__name">{{ item.service.name }}</h3>
+                <span class="cart-item__qty">Qté : {{ item.qty }} × {{ "%.0f"|format(item.service.price) }} € / {{ item.service.unit }}</span>
             </div>
-            <span class="cart-item__price">{{ "%.2f"|format(item.subtotal) }} €</span>
-            <form action="{{ url_for('remove_from_cart', service_id=item.id) }}" method="post">
-                <button type="submit" class="btn btn--sm btn--ghost">Retirer</button>
+            <span class="cart-item__price" aria-label="Sous-total : {{ "%.2f"|format(item.subtotal) }} euros">{{ "%.2f"|format(item.subtotal) }} €</span>
+            <form action="{{ url_for('cart.remove_from_cart', service_id=item.service.id) }}" method="post">
+                <button type="submit" class="btn btn--sm btn--ghost" aria-label="Retirer {{ item.service.name }} du devis">Retirer</button>
             </form>
-        </div>
+        </li>
         {% endfor %}
+        </ul>
 
-        <div class="cart-total">
+        <div class="cart-total" aria-live="polite">
             <span class="cart-total__label">Total estimé</span>
             <span class="cart-total__value">{{ "%.2f"|format(total) }} €</span>
         </div>
 
-        <form action="{{ url_for('request_intervention') }}" method="post">
+        <form action="{{ url_for('cart.request_intervention') }}" method="post">
             <div class="cart-notes">
-                <label class="form-label" for="notes">Notes complémentaires (optionnel)</label>
-                <textarea id="notes" name="notes" placeholder="Décrivez votre besoin, contraintes horaires, adresse d'intervention..."></textarea>
+                <label class="form-label" for="notes">Notes complémentaires <span class="form-optional">(optionnel)</span></label>
+                <textarea id="notes" name="notes" class="form-input"
+                          placeholder="Décrivez votre besoin, contraintes horaires, adresse d'intervention..."
+                          aria-describedby="notes-hint"></textarea>
+                <span id="notes-hint" class="form-hint">Toute information utile pour notre équipe.</span>
             </div>
             <div class="cart-actions">
-                <a href="{{ url_for('services') }}" class="btn btn--ghost">Ajouter des services</a>
+                <a href="{{ url_for('main.services') }}" class="btn btn--ghost">Ajouter des services</a>
                 <button type="submit" class="btn btn--primary">Demander l'intervention</button>
             </div>
         </form>
     {% else %}
         <div class="cart-empty">
-            <p class="cart-empty__icon">📋</p>
+            <p class="cart-empty__icon" aria-hidden="true">📋</p>
             <p>Votre devis est vide.</p>
             <p style="color: var(--gray-400); font-size: 0.9rem; margin-top: 0.5rem;">Ajoutez des services pour constituer votre demande d'intervention.</p>
-            <a href="{{ url_for('services') }}" class="btn btn--dark mt-xl">Voir nos services</a>
+            <a href="{{ url_for('main.services') }}" class="btn btn--dark mt-xl">Voir nos services</a>
         </div>
     {% endif %}
 </section>

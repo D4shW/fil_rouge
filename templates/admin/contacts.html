@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+{% block title %}Admin — Demandes de contact{% endblock %}
+
+{% block content %}
+<section class="section">
+    <div class="section__header">
+        <h1 class="section__title">Demandes de contact</h1>
+        <div style="display:flex; gap:.75rem;">
+            <a href="{{ url_for('admin.dashboard') }}" class="btn btn--primary btn--sm">Tableau de bord</a>
+            <a href="{{ url_for('admin.logout') }}" class="btn btn--outline btn--sm">Déconnexion</a>
+        </div>
+    </div>
+
+    {% if contacts %}
+    <div class="table-wrapper">
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Date</th>
+                    <th>Nom</th>
+                    <th>Email</th>
+                    <th>Téléphone</th>
+                    <th>Sujet</th>
+                    <th>Message</th>
+                    <th>Statut</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for c in contacts %}
+                <tr>
+                    <td>{{ c.id }}</td>
+                    <td>{{ c.date[:16] }}</td>
+                    <td>{{ c.name }}</td>
+                    <td><a href="mailto:{{ c.email }}">{{ c.email }}</a></td>
+                    <td>{{ c.phone or '—' }}</td>
+                    <td>{{ c.subject or '—' }}</td>
+                    <td class="admin-table__msg">{{ c.message }}</td>
+                    <td>
+                        <form method="post"
+                              action="{{ url_for('admin.update_status', contact_id=c.id) }}"
+                              class="status-form">
+                            <select name="status" class="status-select status-select--{{ c.status|replace(' ', '-') }}"
+                                    onchange="this.form.submit()">
+                                {% for s in statuses %}
+                                    <option value="{{ s }}" {% if s == c.status %}selected{% endif %}>{{ s }}</option>
+                                {% endfor %}
+                            </select>
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+        <p class="empty-state">Aucune demande de contact pour le moment.</p>
+    {% endif %}
+</section>
+{% endblock %}
+
+{% block head %}
+<style>
+.section__header { display:flex; justify-content:space-between; align-items:center; margin-bottom:2rem; }
+.table-wrapper { overflow-x:auto; }
+.admin-table { width:100%; border-collapse:collapse; font-size:.9rem; }
+.admin-table th,
+.admin-table td { padding:.75rem 1rem; border-bottom:1px solid var(--border,#e5e7eb); text-align:left; vertical-align:top; }
+.admin-table th { background:var(--surface-2,#f9fafb); font-weight:600; white-space:nowrap; }
+.admin-table tbody tr:hover { background:var(--surface-2,#f9fafb); }
+.admin-table__msg { max-width:260px; white-space:pre-wrap; word-break:break-word; }
+.status-select { padding:.35rem .6rem; border-radius:6px; border:1px solid var(--border,#d1d5db); font-size:.85rem; cursor:pointer; }
+.status-select--nouveau        { background:#eff6ff; color:#1d4ed8; }
+.status-select--en-cours       { background:#fff7ed; color:#c2410c; }
+.status-select--traité         { background:#f0fdf4; color:#15803d; }
+.status-select--fermé          { background:#f3f4f6; color:#6b7280; }
+.empty-state { color:var(--muted,#6b7280); margin-top:3rem; text-align:center; }
+</style>
+{% endblock %}
